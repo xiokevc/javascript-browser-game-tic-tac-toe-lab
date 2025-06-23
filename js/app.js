@@ -1,4 +1,4 @@
-// MIN. REQS
+// MIN. REQUIREMENTS
 // Display an empty tic-tac-toe board when the page is initially displayed.
 // A player can click on the nine cells to make a move.
 // Every click will alternate between marking an X and O.
@@ -244,21 +244,114 @@
 
 /*-------------------------------- Constants --------------------------------*/
 
-
+const winningCombos = [
+  [0, 1, 2], // top row
+  [3, 4, 5], // middle row
+  [6, 7, 8], // bottom row
+  [0, 3, 6], // left column
+  [1, 4, 7], // middle column
+  [2, 5, 8], // right column
+  [0, 4, 8], // diagonal top-left to bottom-right
+  [2, 4, 6]  // diagonal top-right to bottom-left
+];
 
 /*---------------------------- Variables (state) ----------------------------*/
 
+let board;
+let turn;
+let winner;
+let tie;
 
 
 /*------------------------ Cached Element References ------------------------*/
 
-
+const squareEls = document.querySelectorAll('.square');
+const messageEl = document.getElementById('message');
+const resetBtnEl = document.getElementById('reset');
 
 /*-------------------------------- Functions --------------------------------*/
 
+function init() {
+  board = ['', '', '', '', '', '', '', '', '']; // 9 empty squares
+  turn = 'X';
+  winner = false;
+  tie = false;
+  render();
 
+function render() {
+  updateBoard();
+  updateMessage();
+}
+
+function updateBoard() {
+  board.forEach((value, index) => {
+    squareEls[index].textContent = value;
+    if (value) {
+      squareEls[index].classList.add('taken');
+    } else {
+      squareEls[index].classList.remove('taken');
+    }
+  });
+}
+
+function updateMessage() {
+  if (!winner && !tie) {
+    messageEl.textContent = `It's ${turn}'s turn`;
+  } else if (!winner && tie) {
+    messageEl.textContent = "It's a tie!";
+  } else {
+    messageEl.textContent = `Player ${turn} wins!`;
+  }
+}
+
+function handleClick(evt) {
+  const squareIndex = parseInt(evt.target.id);
+
+  // Guard clauses: ignore clicks if square taken or game won
+  if (board[squareIndex] !== '' || winner) return;
+
+  placePiece(squareIndex);
+  checkForWinner();
+  checkForTie();
+  switchPlayerTurn();
+  render();
+}
+
+function placePiece(index) {
+  board[index] = turn;
+}
+
+function checkForWinner() {
+  for (let combo of winningCombos) {
+    const [a, b, c] = combo;
+    if (
+      board[a] !== '' &&
+      board[a] === board[b] &&
+      board[a] === board[c]
+    ) {
+      winner = true;
+      return;
+    }
+  }
+  winner = false;
+}
+
+function checkForTie() {
+  if (winner) return; // no tie if there's a winner
+  tie = board.every(square => square !== '');
+}
+
+function switchPlayerTurn() {
+  if (winner) return; // don't switch if game over
+  turn = turn === 'X' ? 'O' : 'X';
+}
 
 /*----------------------------- Event Listeners -----------------------------*/
 
+squareEls.forEach(square => square.addEventListener('click', handleClick));
 
+resetBtnEl.addEventListener('click', init);
 
+/*--------------------------- Start the game! ---------------------------*/
+
+init();

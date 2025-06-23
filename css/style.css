@@ -1,20 +1,69 @@
-body {
-  background-color: gainsboro;
-  /* Use a system font, if none are available use an available sans-sarif */
-  font-family: system-ui, sans-serif;
-  margin: 0;
+/* Container for the entire board */
+#board {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: repeat(3, 100px);
+  gap: 10px;
+  margin: 20px auto;
+  width: max-content;
+  background-color: #222;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 
-.board {
+/* Each square styling */
+.square {
+  background-color: #f0f0f0;
+  border: 2px solid #444;
+  font-size: 3rem;
+  font-weight: bold;
+  color: #333;
   display: flex;
-  flex-wrap: wrap;
-  width: 325px;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.3s ease;
+  border-radius: 5px;
 }
 
-.sqr {
-  width: 30%;
-  aspect-ratio: 1/1;
-  border: 3px solid black;
-  font-size: 64px;
+/* Hover effect on squares (only if not taken) */
+.square:not(.taken):hover {
+  background-color: #ddd;
+}
+
+/* When a square is taken (X or O), cursor changes */
+.square.taken {
+  cursor: default;
+  color: #111;
+  background-color: #ccc;
+}
+
+/* Message area */
+#message {
+  font-size: 1.5rem;
   text-align: center;
+  margin-top: 10px;
+  font-weight: 600;
+  color: #222;
+  min-height: 2em;
+}
+
+/* Reset button */
+#reset {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 25px;
+  font-size: 1.2rem;
+  background-color: #444;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#reset:hover {
+  background-color: #666;
 }
