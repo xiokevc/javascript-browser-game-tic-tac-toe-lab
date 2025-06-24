@@ -258,28 +258,28 @@ const winningCombos = [
 /*---------------------------- Variables (state) ----------------------------*/
 
 let board;
-let turn;
+let turn; // tracks whether it's 'X' or 'O'
 let winner;
 let tie;
 
 
 /*------------------------ Cached Element References ------------------------*/
 
-const squareEls = document.querySelectorAll('.square');
-const messageEl = document.getElementById('message');
-const resetBtnEl = document.getElementById('reset');
+const squareEls = document.querySelectorAll('.square'); // selects all DOM elements (9 game squares)
+const messageEl = document.getElementById('message'); // ex. shows 'Player X wins!'
+const resetBtnEl = document.getElementById('reset'); // reset button/ resets game
 
 /*-------------------------------- Functions --------------------------------*/
 
 function init() {
-  board = ['', '', '', '', '', '', '', '', '']; // 9 empty squares
+  board = ['', '', '', '', '', '', '', '', '']; // 3x3 - 9 empty squares
   turn = 'X';
   winner = false;
   tie = false;
   render();
 }
 
-function render() {
+function render() { //visually updates board/ messages
   updateBoard();
   updateMessage();
 }
@@ -337,13 +337,15 @@ function checkForWinner() {
   winner = false;
 }
 
+// no tie if there's a winner
 function checkForTie() {
-  if (winner) return; // no tie if there's a winner
+  if (winner) return; 
   tie = board.every(square => square !== '');
 }
 
+// don't switch if game over
 function switchPlayerTurn() {
-  if (winner) return; // don't switch if game over
+  if (winner) return; 
   turn = turn === 'X' ? 'O' : 'X';
 }
 
