@@ -244,6 +244,7 @@
 
 /*-------------------------------- Constants --------------------------------*/
 
+// determines all winning combinations
 const winningCombos = [
   [0, 1, 2], // top row
   [3, 4, 5], // middle row
@@ -286,7 +287,14 @@ function render() { //visually updates board/ messages
 
 function updateBoard() {
   board.forEach((value, index) => {
-    squareEls[index].textContent = value;
+    if (value === 'X') {
+      squareEls[index].textContent = '❌';
+    } else if (value === 'O') {
+      squareEls[index].textContent = '⭕️';
+    } else {
+      squareEls[index].textContent = '';
+    }
+
     if (value) {
       squareEls[index].classList.add('taken');
     } else {
@@ -308,7 +316,7 @@ function updateMessage() {
 function handleClick(evt) {
   const squareIndex = parseInt(evt.target.id);
 
-  // Guard clauses: ignore clicks if square taken or game won
+  // if square taken or game won, ignore click
   if (board[squareIndex] !== '' || winner) return;
 
   placePiece(squareIndex);
